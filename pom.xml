@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.apifactory</groupId>
-	<artifactId>client-contract-api</artifactId>
+	<artifactId>clientcontractapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>client-contract-api</name>
+	<name>clientcontractapi</name>
 	<description>Backend API for managing clients and contracts (technical exercise for Vaudoise)</description>
 	<url/>
 	<licenses>

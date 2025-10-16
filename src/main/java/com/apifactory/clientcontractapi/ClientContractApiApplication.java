@@ -1,4 +1,4 @@
-package com.apifactory.client_contract_api;
+package com.apifactory.clientcontractapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
