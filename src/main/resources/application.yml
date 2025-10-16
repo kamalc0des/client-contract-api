@@ -6,21 +6,23 @@ spring:
   # DATABASE CONFIGURATION
   # ======================================================
   datasource:
-    # File mode ensures data persistence between app restarts
     url: jdbc:h2:file:./data/api_factory_db
     driver-class-name: org.h2.Driver
-    username: user_db
+    username: sa
     password: password
 
   h2:
     console:
-      enabled: true        
-      path: /h2-console    # Accessible at http://localhost:8080/h2-console
+      enabled: true
+      path: /h2-console
+      settings:
+        trace: false
+        web-allow-others: true
 
   jpa:
     hibernate:
-      ddl-auto: update     # Automatically creates/updates tables based on entities
-    show-sql: true         
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
@@ -50,25 +52,26 @@ server:
     include-message: always                 # Include detailed messages in error responses
     include-binding-errors: always          # Show validation errors in API responses
 
-# ======================================================
-# LOGGING CONFIGURATION
-# ======================================================
+## Custom logs
 logging:
   level:
-    root: WARN                               # Hide most Spring noise
-    org.springframework: WARN
-    org.hibernate: WARN
-    com.apifactory.clientcontractapi: INFO   # Only log your own classes to file
+    root: INFO
+    com.apifactory.clientcontractapi: INFO
 
-  ## Custom logs
   file:
-    name: ./logs/app.log
-    max-size: 10MB
-    max-history: 7
+    path: ./logs 
+    name: ./logs/app.log                       # <— triggers file logging
+
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB                    # <— correct key name
+      max-history: 7                         # keep 7 rotated logs
+      total-size-cap: 100MB                  # optional: global size cap
+      clean-history-on-start: true           # refresh old logs each startup
 
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
-    console: "%clr(%d{HH:mm:ss}){faint} %clr(%-5level) %clr(%logger{36}){cyan} - %msg%n"
+
 
 # ======================================================
 # BACKUP CONFIGURATION

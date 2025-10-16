@@ -33,4 +33,10 @@ build/
 .vscode/
 
 ### Backups ###
-./backups
+backups/
+
+### H2 database ###
+data/
+
+### Custom Logs ###
+logs/
