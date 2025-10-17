@@ -19,7 +19,7 @@ public class Company extends Client {
     @Pattern(
     regexp = "^[A-Za-z]{3}-\\d{3}$", message = "Invalid company identifier format. Expected pattern: aaa-123") // Optionnal but good to have, more clean ()
     @Column(unique = true, nullable = false) // Unique company id
-    private String companyIdentifier;
+    private String companyId;
 
     public Company() {
         setType(ClientType.COMPANY); // define the type of a Company

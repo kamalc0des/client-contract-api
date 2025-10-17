@@ -18,8 +18,8 @@ public interface CompanyRepository extends JpaRepository<Company, UUID> {
     /**
      * Checks if a company already exists with the given identifier.
      *
-     * @param companyIdentifier the unique identifier of the company.
+     * @param companyId the unique identifier of the company.
      * @return true if a company exists with this identifier, else false.
      */
-    boolean existsByCompanyIdentifier(String companyIdentifier);
+    boolean existsByCompanyId(String companyId);
 }
