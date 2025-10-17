@@ -1,4 +1,4 @@
-package com.apifactory.client_contract_api;
+package com.apifactory.clientcontractapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

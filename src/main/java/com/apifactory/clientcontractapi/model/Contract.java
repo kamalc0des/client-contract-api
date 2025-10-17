@@ -32,8 +32,8 @@ public class Contract {
     @JsonIgnore // do not expose the updateDate into the API
     private LocalDate updateDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "client_id", nullable = true)
     private Client client;
 
     /**

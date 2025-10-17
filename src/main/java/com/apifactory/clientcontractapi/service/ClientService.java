@@ -20,7 +20,7 @@ import java.util.UUID;
  * Service responsible for managing client business logic.
  */
 @Service
-@Transactional
+@Transactional // Do not remove, important to prevent error during actions on the class 
 public class ClientService {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientService.class);
@@ -110,8 +110,10 @@ public class ClientService {
         List<Contract> activeContracts = contractRepository.findActiveContractsByClientId(id, null);
         for (Contract contract : activeContracts) {
             contract.setEndDate(LocalDate.now());
+            contract.setClient(null); // detach client to avoid FK violation (error find during testing)
         }
-        contractRepository.saveAll(activeContracts);
+        contractRepository.saveAll(activeContracts); // save the past contract from this client, but delete the client in DB
+        contractRepository.flush(); // ensure DB state before client deletion
 
         clientRepository.delete(client);
         logger.info("Client {} deleted successfully with {} contracts closed", id, activeContracts.size());

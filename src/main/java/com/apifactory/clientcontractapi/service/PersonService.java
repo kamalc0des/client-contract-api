@@ -15,7 +15,7 @@ import java.util.UUID;
  * Service responsible for managing Person-type clients.
  */
 @Service
-@Transactional
+@Transactional // Do not remove, important to prevent error during actions on the class 
 public class PersonService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersonService.class);

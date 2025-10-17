@@ -14,7 +14,7 @@ import java.util.UUID;
  * Service responsible for managing Company-type clients.
  */
 @Service
-@Transactional
+@Transactional // Do not remove, important to prevent error during actions on the class 
 public class CompanyService {
 
     private static final Logger logger = LoggerFactory.getLogger(CompanyService.class);

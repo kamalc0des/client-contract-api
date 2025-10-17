@@ -16,7 +16,7 @@ import java.util.UUID;
  * Service responsible for managing contract business logic.
  */
 @Service
-@Transactional
+@Transactional // Do not remove, important to prevent error during actions on the class 
 public class ContractService {
 
     private static final Logger logger = LoggerFactory.getLogger(ContractService.class);
