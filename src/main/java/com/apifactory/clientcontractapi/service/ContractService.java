@@ -1,6 +1,8 @@
 package com.apifactory.clientcontractapi.service;
 
+import com.apifactory.clientcontractapi.model.Client;
 import com.apifactory.clientcontractapi.model.Contract;
+import com.apifactory.clientcontractapi.repository.ClientRepository;
 import com.apifactory.clientcontractapi.repository.ContractRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,14 +19,17 @@ import java.util.UUID;
  * Service responsible for managing contract business logic.
  */
 @Service
-@Transactional // Do not remove, important to prevent error during actions on the class 
+@Transactional // Do not remove, important to prevent error during actions on the class
 public class ContractService {
 
     private static final Logger logger = LoggerFactory.getLogger(ContractService.class);
     private final ContractRepository contractRepository;
+    private final ClientRepository clientRepository;
 
-    public ContractService(ContractRepository contractRepository) {
+
+    public ContractService(ContractRepository contractRepository, ClientRepository clientRepository) {
         this.contractRepository = contractRepository;
+        this.clientRepository = clientRepository;
     }
 
     /**
@@ -39,9 +45,36 @@ public class ContractService {
     }
 
     /**
+     * Creates a new contract for a given client with optional dates and cost.
+     * If startDate is null, current date is used.
+     * If endDate is null, it remains null in the database.
+     *
+     * @param clientId   the client ID
+     * @param startDate  optional start date
+     * @param endDate    optional end date
+     * @param costAmount contract cost amount
+     * @return the persisted contract
+     */
+
+    public Contract createContract(UUID clientId, LocalDateTime startDate, LocalDateTime endDate, BigDecimal costAmount) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new IllegalArgumentException("Client not found: " + clientId));
+
+        Contract contract = new Contract();
+        contract.setClient(client);
+        contract.setEndDate(endDate);
+        contract.setCostAmount(costAmount);
+
+        logger.info("Creating contract for client {} (start={}, end={}, amount={})",
+                clientId, contract.getStartDate(), contract.getEndDate(), costAmount);
+
+        return contractRepository.save(contract);
+    }
+
+    /**
      * Updates a contract's cost amount and automatically refreshes its updateDate.
      *
-     * @param id the contract ID
+     * @param id        the contract ID
      * @param newAmount the new cost amount
      * @return the updated contract
      */
@@ -80,4 +113,3 @@ public class ContractService {
         return contractRepository.sumActiveContractsByClientId(clientId);
     }
 }
-

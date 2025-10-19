@@ -5,6 +5,8 @@ import com.apifactory.clientcontractapi.model.Contract;
 import com.apifactory.clientcontractapi.model.Person;
 import com.apifactory.clientcontractapi.repository.ClientRepository;
 import com.apifactory.clientcontractapi.repository.ContractRepository;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,13 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Integration test for {@link ClientService}.
- * Verifies that deleting a client automatically closes all active contracts.
  */
 @SpringBootTest
 @Transactional
@@ -35,29 +39,54 @@ class ClientServiceTest {
     @Autowired
     private ContractRepository contractRepository;
 
+    private Person testPerson;
+
+    @BeforeEach
+    void setup() {
+        testPerson = new Person();
+        testPerson.setName("Kamal Aarab");
+        testPerson.setEmail("kamal@gmail.com");
+        testPerson.setPhone("+84048120");
+        testPerson.setBirthDate(LocalDate.of(1998, 8, 9));
+        testPerson.setType(ClientType.PERSON);
+        clientRepository.saveAndFlush(testPerson);
+    }
+
+    @Test
+    void shouldCreateAndRetrieveClient() {
+        Person saved = (Person) clientService.getClientById(testPerson.getId());
+        assertThat(saved).isNotNull();
+        assertThat(saved.getName()).isEqualTo("Kamal Aarab");
+    }
+
+    @Test
+    void shouldUpdateClientInfo() {
+        testPerson.setPhone("+4129414124");
+        clientService.updateClient(testPerson.getId(), testPerson);
+        Person updated = (Person) clientService.getClientById(testPerson.getId());
+        assertThat(updated.getPhone()).isEqualTo("+4129414124");
+    }
+
+    @Test
+    void shouldThrowExceptionForUnknownClient() {
+        UUID fakeId = UUID.randomUUID();
+        assertThatThrownBy(() -> clientService.getClientById(fakeId))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
     @Test
     void deletingClientShouldCloseActiveContracts() {
-        // Arrange — create and persist a Person client
-        Person person = new Person();
-        person.setName("Client To Delete");
-        person.setEmail("delete@gmail.com");
-        person.setPhone("+193228765");
-        person.setBirthDate(LocalDate.of(1990, 1, 1));
-        person.setType(ClientType.PERSON);
-
-        // Persist the client >> needed with H2 DATABASE
-        clientRepository.saveAndFlush(person);
 
         // Create and persist a contract linked to this client
         Contract contract = new Contract();
-        contract.setClient(person);
-        contract.setStartDate(LocalDate.now().minusDays(5));
+        contract.setClient(testPerson);
+        contract.setStartDate(LocalDateTime.now().minusDays(5));
         contract.setEndDate(null);
         contract.setCostAmount(new BigDecimal("100"));
         contractRepository.saveAndFlush(contract);
 
         // Act — delete client via service
-        clientService.deleteClient(person.getId());
+        clientService.deleteClient(testPerson.getId());
 
         // Assert — all contracts should now have a non-null end date
         List<Contract> updatedContracts = contractRepository.findAll();

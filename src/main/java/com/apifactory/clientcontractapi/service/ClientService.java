@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,7 +110,7 @@ public class ClientService {
         // Close all active contracts for this client
         List<Contract> activeContracts = contractRepository.findActiveContractsByClientId(id, null);
         for (Contract contract : activeContracts) {
-            contract.setEndDate(LocalDate.now());
+            contract.setEndDate(LocalDateTime.now());
             contract.setClient(null); // detach client to avoid FK violation (error find during testing)
         }
         contractRepository.saveAll(activeContracts); // save the past contract from this client, but delete the client in DB

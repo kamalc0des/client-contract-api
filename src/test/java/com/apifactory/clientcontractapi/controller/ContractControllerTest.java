@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,7 +47,7 @@ class ContractControllerTest {
         Contract contract = new Contract();
         contract.setId(1L);
         contract.setCostAmount(new BigDecimal("150.0"));
-        contract.setStartDate(LocalDate.now().minusDays(10));
+        contract.setStartDate(LocalDateTime.now().minusDays(10));
         contract.setEndDate(null);
 
         // Mock the service layer response

@@ -6,8 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.apifactory.clientcontractapi.service.ContractService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -23,37 +27,36 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal costAmount;
 
     @JsonIgnore // do not expose the updateDate into the API
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "client_id", nullable = true)
     private Client client;
 
-    /**
-     * JPA entity listener used to automatically manage timestamps.
-     */
-    public static class AuditListener {
+    private static final Logger logger = LoggerFactory.getLogger(ContractService.class);
 
-        /** Called before the entity is first persisted (insert). */
-        @PrePersist
-        public void prePersist(Contract contract) {
-            if (contract.getStartDate() == null) {
-                contract.setStartDate(LocalDate.now());
-            }
-            contract.setUpdateDate(LocalDate.now());
-        }
 
-        /** Called before the entity is updated (update). */
-        @PreUpdate
-        public void preUpdate(Contract contract) {
-            contract.setUpdateDate(LocalDate.now());
-        }
-    }
+     /** Called before the entity is first persisted (insert). */
+     @PrePersist
+     protected void onCreate() {
+         logger.info("ℹ️ PrePersist triggered for Contract!");
+         if (startDate == null) {
+             startDate = LocalDateTime.now();
+         }
+         updateDate = LocalDateTime.now();
+     }
+
+     /** Called before the entity is updated (update). */
+     @PreUpdate
+     protected void onUpdate() {
+        logger.info("ℹ️ PreUpdate triggered for Contract!");
+         updateDate = LocalDateTime.now();
+     }
 }

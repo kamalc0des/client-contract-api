@@ -10,6 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,14 +47,14 @@ class ContractRepositoryTest {
         Contract active = new Contract();
         active.setClient(savedClient);
         active.setCostAmount(new BigDecimal("100"));
-        active.setStartDate(LocalDate.now().minusDays(5));
+        active.setStartDate(LocalDateTime.now().minusDays(5));
         active.setEndDate(null);
         contractRepository.save(active);
     
         Contract expired = new Contract();
         expired.setClient(savedClient);
         expired.setCostAmount(new BigDecimal("200"));
-        expired.setEndDate(LocalDate.now().minusDays(1));
+        expired.setEndDate(LocalDateTime.now().minusDays(1));
         contractRepository.save(expired);
     
         List<Contract> activeContracts = contractRepository.findActiveContractsByClientId(savedClient.getId(), null);
