@@ -45,7 +45,7 @@ spring:
   # ======================================================
   security:
     jwt:
-      secret: "super-secret-key-change-me"  # moved it to env variable in production
+      secret: "secret-key-change-me-in-production"  # moved it to env variable in production
       expiration: 86400000                  # Token validity in milliseconds (1 day)
 
 # ======================================================
