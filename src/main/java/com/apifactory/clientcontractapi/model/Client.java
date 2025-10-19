@@ -26,9 +26,11 @@ public abstract class Client {
     @NotBlank
     private String name;
 
+    @NotBlank
     @Pattern(regexp = "^[0-9+()\\-\\s]*$", message = "Invalid phone number format")
     private String phone;
 
+    @Column(unique = true)
     @Email
     private String email;
 

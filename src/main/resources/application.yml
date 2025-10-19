@@ -5,6 +5,10 @@ spring:
   # ======================================================
   # DATABASE CONFIGURATION
   # ======================================================
+  sql:
+    init:
+      mode: never
+
   datasource:
     url: jdbc:h2:file:./data/api_factory_db
     driver-class-name: org.h2.Driver
@@ -22,6 +26,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    defer-datasource-initialization: true # force to wait the creation of database tables
     show-sql: true
     properties:
       hibernate:
