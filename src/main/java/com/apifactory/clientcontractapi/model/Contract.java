@@ -2,6 +2,7 @@ package com.apifactory.clientcontractapi.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +28,7 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @PastOrPresent(message = "Start date cannot be in the future")
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 

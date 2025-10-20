@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -93,7 +92,7 @@ public class ContractService {
      * @param updateDate optional filter; if null, all active contracts are returned
      * @return list of active contracts
      */
-    public List<Contract> getActiveContracts(UUID clientId, LocalDate updateDate) {
+    public List<Contract> getActiveContracts(UUID clientId, LocalDateTime updateDate) {
         if (updateDate != null) {
             logger.info("Fetching active contracts for client {} updated since {}", clientId, updateDate);
         } else {

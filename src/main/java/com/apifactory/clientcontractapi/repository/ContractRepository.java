@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +33,7 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
         AND (c.endDate IS NULL OR c.endDate > CURRENT_DATE)
         AND (:updateDate IS NULL OR c.updateDate >= :updateDate)
     """)    
-    List<Contract> findActiveContractsByClientId(UUID clientId, LocalDate updateDate);
+    List<Contract> findActiveContractsByClientId(UUID clientId, LocalDateTime updateDate);
 
     /**
      * Calculates the total cost of all active contracts for a specific client.

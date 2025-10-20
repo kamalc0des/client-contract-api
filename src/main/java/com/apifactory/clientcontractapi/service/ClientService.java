@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +40,7 @@ public class ClientService {
      */
     public Client createClient(Client client) {
         logger.info("Creating new client with name: {}", client.getName());
-        return clientRepository.save(client);
+        return clientRepository.saveAndFlush(client);
     }
 
     /**

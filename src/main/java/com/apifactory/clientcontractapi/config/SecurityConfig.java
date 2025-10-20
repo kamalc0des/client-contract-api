@@ -1,6 +1,7 @@
 package com.apifactory.clientcontractapi.config;
 
 import com.apifactory.clientcontractapi.security.JwtAuthenticationFilter;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,15 +18,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    /**
-     * BCrypt encoder for password hashing.
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /**
+/**
      * Simple in-memory users for demo purposes.
      */
     @Bean
@@ -42,7 +40,7 @@ public class SecurityConfig {
         );
     }
 
-    /**
+/**
      * Modern way to expose the AuthenticationManager bean.
      * It retrieves the automatically configured AuthenticationManager from Spring.
      */
@@ -51,7 +49,7 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    /**
+/**
      * Security filter chain for stateless JWT-based API.
      */
     @Bean
