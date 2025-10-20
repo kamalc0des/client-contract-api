@@ -8,6 +8,7 @@ import com.apifactory.clientcontractapi.repository.ContractRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -88,8 +89,8 @@ class ClientServiceTest {
         // Act — delete client via service
         clientService.deleteClient(testPerson.getId());
 
-        // Assert — all contracts should now have a non-null end date
-        List<Contract> updatedContracts = contractRepository.findAll();
+        // Assert — all contracts of this client should now have a non-null end date
+        List<Contract> updatedContracts = contractRepository.findActiveContractsByClientId(testPerson.getId(), null);
         assertThat(updatedContracts)
                 .as("All active contracts should be closed after client deletion")
                 .allMatch(c -> c.getEndDate() != null);

@@ -57,11 +57,12 @@ class ContractServiceTest {
 
     @Test
     void shouldCreateContractWithDefaults() {
+        Integer sizeContractsAlreadyCreated = contractRepository.findAll().size();
         Contract contract = contractService.createContract(testPerson.getId(),
                 null, null, new BigDecimal("250.00"));
 
         assertThat(contract).isNotNull();
-        assertThat(contractRepository.findAll()).hasSize(1);
+        assertThat(contractRepository.findAll()).hasSize(sizeContractsAlreadyCreated + 1);
         assertThat(contract.getStartDate()).isNotNull();
         assertThat(contract.getEndDate()).isNull();
         assertThat(contract.getUpdateDate()).isNotNull();
