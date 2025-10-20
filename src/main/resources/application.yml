@@ -37,8 +37,7 @@ spring:
   # JSON SERIALIZATION CONFIGURATION
   # ======================================================
   jackson:
-    date-format: yyyy-MM-dd'T'HH:mm:ssXXX   # ISO 8601 format
-    time-zone: UTC                         
+    date-format: yyyy-MM-dd'T'HH:mm:ssXXX   # ISO 8601 format                      
 
   # ======================================================
   # SECURITY CONFIGURATION
